@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ហាងទំនិញ | Products Catalog</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Kantumruy Pro & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kantumruy Pro', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-brand-600 text-white text-xs md:text-sm py-2 px-4 text-center font-medium">
+        🎉 ការបញ្ចុះតម្លៃពិសេសរហូតដល់ 30% សម្រាប់ការកុម្ម៉ង់ក្នុងសប្តាហ៍នេះ! | ដឹកជញ្ជូនឥតគិតថ្លៃសម្រាប់ការទិញចាប់ពី $50 ឡើងទៅ
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="bg-white sticky top-0 z-40 shadow-sm border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center space-x-2">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl font-bold shadow-md">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-brand-600 to-indigo-600 bg-clip-text text-transparent">
+                            KHMER STORE
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex space-x-8 font-medium text-slate-600">
+                    <a href="index.html" class="hover:text-brand-600 transition">ទំព័រដើម</a>
+                    <a href="product.html" class="text-brand-600 font-semibold border-b-2 border-brand-600 pb-1">ផលិតផល</a>
+                    <a href="discount.html" class="text-brand-600 font-semibold border-b-2 border-brand-600 pb-1">ការបញ្ចុះតម្លៃ</a>
+                    <a href="about.html" class="hover:text-brand-600 transition">អំពីយើង</a>
+                    <a href="contact.html" class="hover:text-brand-600 transition">ទំនាក់ទំនង</a>
+                </nav>
+
+                <!-- Search & Action Icons -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search Input (Desktop) -->
+                    <div class="relative hidden sm:block w-48 md:w-64">
+                        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ស្វែងរកផលិតផល..." 
+                            class="w-full pl-9 pr-4 py-2 text-sm bg-slate-100 border-none rounded-full focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                    </div>
+
+                    <!-- Cart Icon with Badge -->
+                    <button onclick="toggleCartDrawer()" class="relative p-2 text-slate-600 hover:text-brand-600 transition rounded-full hover:bg-slate-100">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
+                            0
+                        </span>
+                    </button>
+
+                    <!-- User Account -->
+                    <a href="#" class="p-2 text-slate-600 hover:text-brand-600 transition rounded-full hover:bg-slate-100 hidden sm:block" title="User account">
+                        <i class="fa-regular fa-user text-xl"></i>
+                    </a>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-600 hover:text-slate-900" title="Toggle mobile menu">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="p-3 bg-slate-50 border-t border-slate-100 sm:hidden">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" onkeyup="syncMobileSearch()" placeholder="ស្វែងរកផលិតផល..." 
+                    class="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header Hero Banner -->
+    <section class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-800 text-white py-12 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#0ea5e9_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto text-center relative z-10">
+            <h1 class="text-3xl md:text-5xl font-bold mb-3">ផលិតផលទាំងអស់</h1>
+            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base">
+                ជ្រើសរើសផលិតផលដែលមានគុណភាពខ្ពស់ តម្លៃសមរម្យ និងមានការធានាត្រឹមត្រូវ។
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        
+        <!-- Filter & Control Bar -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+            
+            <!-- Category Tabs -->
+            <div class="flex items-center space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+                <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-brand-600 text-white shadow-sm" data-cat="all">
+                    ទាំងអស់
+                </button>
+                <button onclick="filterCategory('electronics')" class="cat-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="electronics">
+                    គ្រឿងអេឡិចត្រូនិច
+                </button>
+                <button onclick="filterCategory('fashion')" class="cat-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="fashion">
+                    សម្លៀកបំពាក់ & ម៉ូដ
+                </button>
+                <button onclick="filterCategory('accessories')" class="cat-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="accessories">
+                    គ្រឿងបន្លាស់
+                </button>
+            </div>
+
+            <!-- Sorting & Count Controls -->
+            <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-4 border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
+                <span id="productCount" class="text-sm text-slate-500 font-medium">បង្ហាញ 8 ផលិតផល</span>
+                
+                <div class="flex items-center space-x-2">
+                    <label for="sortSelect" class="text-sm text-slate-500 whitespace-nowrap hidden sm:inline">តម្រៀបតាម:</label>
+                    <select id="sortSelect" onchange="sortProducts()" class="text-sm bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <option value="featured">ការណែនាំ (Featured)</option>
+                        <option value="low-high">តម្លៃ: ទាប ទៅ ខ្ពស់</option>
+                        <option value="high-low">តម្លៃ: ខ្ពស់ ទៅ ទាប</option>
+                        <option value="rating">ការវាយតម្លៃខ្ពស់</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Product Cards generated by JavaScript -->
+        </div>
+
+        <!-- Empty State (Shown when search/filter returns nothing) -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
+            <div class="w-20 h-20 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto text-3xl mb-4">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-700 mb-1">មិនរកឃើញផលិតផលទេ!</h3>
+            <p class="text-slate-500 text-sm mb-4">សូមព្យាយាមផ្លាស់ប្តូរពាក្យស្វែងរក ឬប្រភេទតម្រៀបឡើងវិញ។</p>
+            <button onclick="resetFilters()" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-sm font-medium hover:bg-brand-700 transition">
+                កំណត់ឡើងវិញ
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-300 pt-12 pb-6 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-9 h-9 rounded-lg bg-brand-600 text-white flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">KHMER STORE</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        ហាងទំនិញអនឡាញឈានមុខគេក្នុងប្រទេសកម្ពុជា ផ្តល់ជូនផលិតផលមានគុណភាពខ្ពស់ និងសេវាកម្មទាន់ចិត្ត។
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-base">តំណភ្ជាប់រហ័ស</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-500 transition">អំពីក្រុមហ៊ុន</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">ផលិតផលថ្មីៗ</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">លក្ខខណ្ឌប្រើប្រាស់</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition">គោលការណ៍ឯកជនភាព</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-base">ទំនាក់ទំនង</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><i class="fa-solid fa-location-dot text-brand-500 mr-2"></i> ភ្នំពេញ, ប្រទេសកម្ពុជា</li>
+                        <li><i class="fa-solid fa-phone text-brand-500 mr-2"></i> +855 12 345 678</li>
+                        <li><i class="fa-solid fa-envelope text-brand-500 mr-2"></i> info@khmerstore.com</li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 text-base">ទទួលបានព័ត៌មានថ្មីៗ</h4>
+                    <p class="text-xs text-slate-400 mb-3">ចុះឈ្មោះដើម្បីទទួលបានការបញ្ចុះតម្លៃពិសេសដំបូងគេ!</p>
+                    <form onsubmit="event.preventDefault(); alert('សូមអរគុណសម្រាប់ការចុះឈ្មោះ!');" class="space-y-2">
+                        <input type="email" placeholder="អ៊ីមែលរបស់អ្នក..." required class="w-full px-3 py-2 text-sm bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-brand-500">
+                        <button type="submit" class="w-full py-2 bg-brand-600 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition">
+                            ចុះឈ្មោះ
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>&copy; 2026 KHMER STORE. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+                <div class="flex space-x-4 mt-3 sm:mt-0">
+                    <a href="#" class="hover:text-slate-300 text-base" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-slate-300 text-base" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" class="hover:text-slate-300 text-base" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-slate-300 text-base" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Slide-over Shopping Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-opacity duration-300 opacity-0">
+        <!-- Backdrop -->
+        <div id="cartBackdrop" onclick="toggleCartDrawer()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="cartPanel" class="w-screen max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out pointer-events-auto">
+                
+                <!-- Drawer Header -->
+                <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-cart-shopping text-brand-400"></i>
+                        <h3 class="font-bold text-lg">កន្ត្រកទំនិញរបស់អ្នក</h3>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="p-2 text-slate-400 hover:text-white rounded-lg" title="Close shopping cart">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-4 space-y-4">
+                    <!-- Items injected by JavaScript -->
+                </div>
+
+                <!-- Drawer Footer & Checkout -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3">
+                    <div class="flex justify-between items-center font-bold text-lg text-slate-800">
+                        <span>សរុបចុងក្រោយ:</span>
+                        <span id="cartTotalPrice" class="text-brand-600">$0.00</span>
+                    </div>
+                    <p class="text-xs text-slate-500">តម្លៃនេះរួមបញ្ចូលទាំងពន្ធ និងការវេចខ្ចប់រួចរាល់។</p>
+                    <button onclick="alert('ដំណើរការការទូទាត់ប្រាក់...')" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-center shadow-lg transition">
+                        ទូទាត់ប្រាក់ឥឡូវនេះ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Product Modal -->
+    <div id="quickViewModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden relative animate-fade-in">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition" title="Close quick view">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent" class="grid grid-cols-1 md:grid-cols-2 p-6 gap-6">
+                <!-- Modal details dynamically loaded -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-green-400 text-xl"></i>
+        <span id="toastMessage" class="text-sm font-medium">បន្ថែមទៅកន្ត្រកជោគជ័យ!</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Sample Products Data
+        const products = [
+            {
+                id: 1,
+                name: 'កាសស្តាប់ត្រចៀក Wireless Pro',
+                category: 'electronics',
+                price: 79.99,
+                oldPrice: 99.99,
+                rating: 4.8,
+                reviews: 124,
+                image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
+                badge: 'ក្តៅៗ',
+                badgeColor: 'bg-red-500',
+                desc: 'កាសស្តាប់ត្រចៀកឥតខ្សែ សម្លេងច្បាស់ល្អ ការពារសំឡេងរំខានពីខាងក្រៅ (Noise Cancellation) និងកាន់ថ្មបានយូររហូតដល់ 30 ម៉ោង។'
+            },
+            {
+                id: 2,
+                name: 'នាឡិកាឆ្លាតវៃ Smart Watch Series 8',
+                category: 'electronics',
+                price: 129.00,
+                oldPrice: 159.00,
+                rating: 4.9,
+                reviews: 89,
+                image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80',
+                badge: 'ថ្មី',
+                badgeColor: 'bg-emerald-500',
+                desc: 'វាស់ចង្វាក់បេះដូង តាមដានការគេង ការពារជម្រាបទឹក និងមានមុខងារកីឡាច្រើនជាង 50 ប្រភេទ។'
+            },
+            {
+                id: 3,
+                name: 'កាតាបស្ពាយខ្នង Leather Backpack',
+                category: 'fashion',
+                price: 45.50,
+                oldPrice: 55.00,
+                rating: 4.6,
+                reviews: 56,
+                image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80',
+                badge: 'បញ្ចុះតម្លៃ',
+                badgeColor: 'bg-amber-500',
+                desc: 'ផលិតពីស្បែកដែលមានគុណភាពខ្ពស់ ស្ទាយទំនើប ស울សមស្របសម្រាប់ការងារ និងការធ្វើដំណើរ។'
+            },
+            {
+                id: 4,
+                name: 'វ៉ែនតាការពារកម្តៅថ្ងៃ Classic Sunglasses',
+                category: 'accessories',
+                price: 25.00,
+                oldPrice: null,
+                rating: 4.5,
+                reviews: 42,
+                image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=600&q=80',
+                badge: null,
+                desc: 'ការពារកាំរស្មី UV400 100% ម៉ូដទាន់សម័យ ស울សមស្របសម្រាប់មនុស្សគ្រប់វ័យ។'
+            },
+            {
+                id: 5,
+                name: 'ស្បែកជើងកីឡា Running Shoes Ultra',
+                category: 'fashion',
+                price: 89.00,
+                oldPrice: 110.00,
+                rating: 4.7,
+                reviews: 210,
+                image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
+                badge: 'លក់ដាច់',
+                badgeColor: 'bg-purple-500',
+                desc: 'ស្រាល ស្រួលពាក់ រត់មិនឈឺជើង និងមានខ្យល់ចេញចូលបានល្អ។'
+            },
+            {
+                id: 6,
+                name: 'អំពូលតុ LED Minimalist Desk Lamp',
+                category: 'accessories',
+                price: 32.00,
+                oldPrice: 40.00,
+                rating: 4.4,
+                reviews: 35,
+                image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80',
+                badge: null,
+                desc: 'អំពូលតុសន្សំសំចៃអគ្គិសនី អាចសម្រួលពន្លឺបាន 3 កម្រិត ការពារភ្នែកពេលអានសៀវភៅ។'
+            },
+            {
+                id: 7,
+                name: 'កែវរក្សាកម្តៅ Stainless Steel Tumbler',
+                category: 'accessories',
+                price: 18.50,
+                oldPrice: 22.00,
+                rating: 4.8,
+                reviews: 98,
+                image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=600&q=80',
+                badge: 'ប្រជាប្រិយ',
+                badgeColor: 'bg-blue-500',
+                desc: 'រក្សាកម្តៅបាន 12 ម៉ោង និងរក្សាក្រជាក់បាន 24 ម៉ោង ផលិតពីអ៊ីណុក 304 សុវត្ថិភាព។'
+            },
+            {
+                id: 8,
+                name: 'កាមេរ៉ាថតរូប Retro Compact Camera',
+                category: 'electronics',
+                price: 349.00,
+                oldPrice: 399.00,
+                rating: 4.9,
+                reviews: 64,
+                image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80',
+                badge: 'លំដាប់ខ្ពស់',
+                badgeColor: 'bg-yellow-600',
+                desc: 'កាមេរ៉ាម៉ូដបុរាណ ប៉ុន្តែរូបភាពកម្រិត 4K ច្បាស់ឥតខ្ចោះ ងាយស្រួលយួរតាមខ្លួន។'
+            }
+        ];
+
+        // Global State
+        let filteredProducts = [...products];
+        let cart = [];
+        let activeCategory = 'all';
+
+        // Render Products to Grid
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            const empty = document.getElementById('emptyState');
+            const countSpan = document.getElementById('productCount');
+
+            countSpan.innerText = `បង្ហាញ ${items.length} ផលិតផល`;
+
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.innerHTML = items.map(p => `
+                <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group">
+                    <!-- Image Box -->
+                    <div class="relative overflow-hidden aspect-square bg-slate-100">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500">
+                        
+                        ${p.badge ? `<span class="absolute top-3 left-3 ${p.badgeColor} text-white text-xs font-bold px-2.5 py-1 rounded-lg shadow-sm">${p.badge}</span>` : ''}
+
+                        <!-- Floating Action Buttons -->
+                        <div class="absolute right-3 top-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <button onclick="openQuickView(${p.id})" class="w-9 h-9 bg-white/90 hover:bg-white text-slate-700 rounded-full shadow-md flex items-center justify-center transition">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                            <button onclick="toggleWishlist(this)" class="w-9 h-9 bg-white/90 hover:bg-white text-slate-700 hover:text-red-500 rounded-full shadow-md flex items-center justify-center transition">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="p-4 flex flex-col flex-grow justify-between">
+                        <div>
+                            <div class="flex items-center space-x-1 text-amber-400 text-xs mb-1">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-slate-700 ml-1">${p.rating}</span>
+                                <span class="text-slate-400">(${p.reviews})</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-base mb-2 line-clamp-1 hover:text-brand-600 transition cursor-pointer" onclick="openQuickView(${p.id})">
+                                ${p.name}
+                            </h3>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between mt-3">
+                            <div>
+                                <span class="text-lg font-bold text-brand-600">$${p.price.toFixed(2)}</span>
+                                ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through ml-1.5">$${p.oldPrice.toFixed(2)}</span>` : ''}
+                            </div>
+                            <button onclick="addToCart(${p.id})" class="px-3.5 py-2 bg-slate-900 hover:bg-brand-600 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition active:scale-95">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>បន្ថែម</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter Category
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.dataset.cat === cat) {
+                    btn.className = "cat-btn active px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-brand-600 text-white shadow-sm";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap transition bg-slate-100 text-slate-600 hover:bg-slate-200";
+                }
+            });
+            applyFilters();
+        }
+
+        // Search & Filter Trigger
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            filteredProducts = products.filter(p => {
+                const matchesCat = activeCategory === 'all' || p.category === activeCategory;
+                const matchesSearch = p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+
+            sortProducts(false); // keep current sort
+        }
+
+        function filterProducts() {
+            applyFilters();
+        }
+
+        function syncMobileSearch() {
+            document.getElementById('searchInput').value = document.getElementById('mobileSearchInput').value;
+            applyFilters();
+        }
+
+        // Sort Products
+        function sortProducts(reRender = true) {
+            const sortVal = document.getElementById('sortSelect').value;
+
+            if (sortVal === 'low-high') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'high-low') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'rating') {
+                filteredProducts.sort((a, b) => b.rating - a.rating);
+            } else {
+                filteredProducts.sort((a, b) => a.id - b.id);
+            }
+
+            if(reRender) renderProducts(filteredProducts);
+            else renderProducts(filteredProducts);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('sortSelect').value = 'featured';
+            filterCategory('all');
+        }
+
+        // Cart Drawer Logic
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cartDrawer');
+            const panel = document.getElementById('cartPanel');
+            const isHidden = drawer.classList.contains('opacity-0');
+
+            if (isHidden) {
+                drawer.classList.remove('pointer-events-none', 'opacity-0');
+                panel.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+                panel.classList.add('translate-x-full');
+            }
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existIndex = cart.findIndex(item => item.id === productId);
+
+            if (existIndex > -1) {
+                cart[existIndex].qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`បានបន្ថែម "${product.name}" ទៅក្នុងកន្ត្រក!`);
+        }
+
+        function updateCartQty(id, change) {
+            const index = cart.findIndex(item => item.id === id);
+            if (index > -1) {
+                cart[index].qty += change;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const badge = document.getElementById('cartBadge');
+            const totalSpan = document.getElementById('cartTotalPrice');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            badge.innerText = totalCount;
+            totalSpan.innerText = `$${totalPrice.toFixed(2)}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3"></i>
+                        <p class="text-sm">មិនទាន់មានទំនិញក្នុងកន្ត្រកនៅឡើយទេ</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <img src="${item.image}" class="w-16 h-16 object-cover rounded-lg">
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-sm text-slate-800 line-clamp-1">${item.name}</h4>
+                        <p class="text-brand-600 font-bold text-xs">$${item.price.toFixed(2)}</p>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 bg-white border border-slate-300 rounded text-xs flex items-center justify-center font-bold">-</button>
+                            <span class="text-xs font-bold px-1">${item.qty}</span>
+                            <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 bg-white border border-slate-300 rounded text-xs flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    <button onclick="updateCartQty(${item.id}, -${item.qty})" class="text-slate-400 hover:text-red-500 p-2">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Quick View Modal
+        function openQuickView(id) {
+            const p = products.find(item => item.id === id);
+            const content = document.getElementById('modalContent');
+            
+            content.innerHTML = `
+                <div class="aspect-square rounded-xl overflow-hidden bg-slate-100">
+                    <img src="${p.image}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-brand-600 uppercase tracking-wider">${p.category}</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1 mb-2">${p.name}</h2>
+                        <div class="flex items-center space-x-2 text-xs mb-3">
+                            <span class="text-amber-400 font-bold"><i class="fa-solid fa-star"></i> ${p.rating}</span>
+                            <span class="text-slate-400">| ${p.reviews} ការវាយតម្លៃ</span>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">${p.desc}</p>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-brand-600 mb-4">$${p.price.toFixed(2)}</div>
+                        <button onclick="addToCart(${p.id}); closeQuickView();" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>បន្ថែមទៅកន្ត្រក</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('quickViewModal').classList.remove('hidden');
+        }
+
+        function closeQuickView() {
+            document.getElementById('quickViewModal').classList.add('hidden');
+        }
+
+        // Wishlist Toggle
+        function toggleWishlist(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('fa-regular')) {
+                icon.className = 'fa-solid fa-heart text-red-500';
+                showToast('បានរក្សាទុកក្នុងបបញ្ជីប្រាថ្នា!');
+            } else {
+                icon.className = 'fa-regular fa-heart';
+            }
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // Init App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+        });
+    </script>
+</body>
+</html>
