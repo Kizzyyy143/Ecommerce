@@ -1,0 +1,5 @@
+node_modules/
+backend/data/orders.json
+backend/data/messages.json
+backend/data/payments.json
+.env

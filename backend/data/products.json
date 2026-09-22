@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "title": "កាសស្តាប់ត្រចៀក Wireless Noise-Canceling",
+    "category": "electronics",
+    "price": 89,
+    "oldPrice": 120,
+    "rating": 4.8,
+    "reviewsCount": 124,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=500",
+    "description": "កាសស្តាប់ត្រចៀកឥតខ្សែដែលមានប្រព័ន្ធកាត់បន្ថយសំឡេងរំខាន និងថ្មកាន់បាន 30 ម៉ោង។"
+  },
+  {
+    "id": 2,
+    "title": "នាឡិកាឆ្លាតវៃ Smart Watch Series 8",
+    "category": "electronics",
+    "price": 150,
+    "oldPrice": 180,
+    "rating": 4.9,
+    "reviewsCount": 89,
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=500",
+    "description": "នាឡិកាឆ្លាតវៃវាស់ចង្វាក់បេះដូង ជំហានដើរ និងតាមដានសុខភាព 24 ម៉ោង។"
+  },
+  {
+    "id": 3,
+    "title": "កាបូបស្ពាយខ្នងទាន់សម័យ Waterproof",
+    "category": "accessories",
+    "price": 35,
+    "oldPrice": 45,
+    "rating": 4.5,
+    "reviewsCount": 56,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=500",
+    "description": "កាបូបស្ពាយការពារជម្រាបទឹក មានថតដាក់ Laptop ទំហំ 15.6 អ៊ីញ។"
+  },
+  {
+    "id": 4,
+    "title": "ស្បែកជើងរត់ប្រណាំង Sport Shoes Pro",
+    "category": "fashion",
+    "price": 65,
+    "oldPrice": 85,
+    "rating": 4.7,
+    "reviewsCount": 210,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=500",
+    "description": "ស្បែកជើងកីឡាស្រាល ស្រួលពាក់ ស័ក្តិសមសម្រាប់ការរត់ និងការដើរ។"
+  },
+  {
+    "id": 5,
+    "title": "អាវយឺតបុរស Cotton Premium 100%",
+    "category": "fashion",
+    "price": 18,
+    "oldPrice": 25,
+    "rating": 4.3,
+    "reviewsCount": 45,
+    "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=500",
+    "description": "អាវយឺត Cotton 100% ទន់ល្មើយ ត្រជាក់ស្រួលពាក់។"
+  },
+  {
+    "id": 6,
+    "title": "វ៉ែនតាការពារពន្លឺថ្ងៃ Classic Sunglasses",
+    "category": "accessories",
+    "price": 28,
+    "oldPrice": 40,
+    "rating": 4.6,
+    "reviewsCount": 78,
+    "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=500",
+    "description": "វ៉ែនតាការពារ UV400 ម៉ូដទាន់សម័យ ស័ក្តិសមទាំងបុរស និងស្ត្រី។"
+  },
+  {
+    "id": 7,
+    "title": "កាមេរ៉ាថតរូប Mirrorless 4K Camera",
+    "category": "electronics",
+    "price": 750,
+    "oldPrice": 850,
+    "rating": 5,
+    "reviewsCount": 32,
+    "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=500",
+    "description": "កាមេរ៉ាថតរូប និងវីដេអូកម្រិត 4K ជាមួយប្រព័ន្ធ Focus រហ័ស។"
+  },
+  {
+    "id": 8,
+    "title": "មួកកែច្នៃ Style Vintage Cap",
+    "category": "fashion",
+    "price": 15,
+    "oldPrice": 20,
+    "rating": 4.4,
+    "reviewsCount": 19,
+    "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=500",
+    "description": "មួកម៉ូដ Vintage សាច់ក្រណាត់ធន់មាំ និងអាចកែសម្រួលទំហំបាន។"
+  }
+]

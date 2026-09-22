@@ -1,0 +1,17 @@
+{
+  "name": "khmer-store-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API and static server for Khmer Store",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js"
+  },
+  "dependencies": {
+    "bakong-khqr": "^1.0.20",
+    "express": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "dotenv": "^16.6.1"
+  }
+}
