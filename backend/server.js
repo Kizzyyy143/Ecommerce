@@ -76,6 +76,16 @@ app.get("/api/products/:id", (request, response) => {
   response.json({ data: product });
 });
 
+app.get("/api/discounts", (request, response) => {
+  const discounts = products
+    .filter((product) => product.oldPrice && product.oldPrice > product.price)
+    .map((product) => ({
+      ...product,
+      discountPercent: Math.round((1 - product.price / product.oldPrice) * 100)
+    }));
+  response.json({ data: discounts, total: discounts.length });
+});
+
 app.post("/api/payments/qr", async (request, response) => {
   if (!bakongConfig.accountId || !bakongConfig.merchantId || !bakongConfig.acquiringBank) {
     return response.status(503).json({ error: "Bakong merchant configuration is missing" });
