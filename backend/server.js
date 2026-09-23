@@ -15,12 +15,12 @@ const products = JSON.parse(fs.readFileSync(path.join(dataDir, "products.json"),
 const ordersFile = path.join(dataDir, "orders.json");
 const messagesFile = path.join(dataDir, "messages.json");
 const paymentsFile = path.join(dataDir, "payments.json");
-const bakongConfig = {
-  accountId: process.env.BAKONG_ACCOUNT_ID,
-  merchantName: process.env.BAKONG_MERCHANT_NAME || "KHMER STORE",
-  merchantCity: process.env.BAKONG_MERCHANT_CITY || "Phnom Penh",
-  merchantId: process.env.BAKONG_MERCHANT_ID,
-  acquiringBank: process.env.BAKONG_ACQUIRING_BANK
+const abaPayWayConfig = {
+  accountId: process.env.ABA_PAYWAY_ACCOUNT_ID || process.env.BAKONG_ACCOUNT_ID,
+  merchantName: process.env.ABA_PAYWAY_MERCHANT_NAME || process.env.BAKONG_MERCHANT_NAME || "KHMER STORE",
+  merchantCity: process.env.ABA_PAYWAY_MERCHANT_CITY || process.env.BAKONG_MERCHANT_CITY || "Phnom Penh",
+  merchantId: process.env.ABA_PAYWAY_MERCHANT_ID || process.env.BAKONG_MERCHANT_ID,
+  acquiringBank: process.env.ABA_PAYWAY_ACQUIRING_BANK || process.env.BAKONG_ACQUIRING_BANK
 };
 
 app.use(express.json({ limit: "50kb" }));
@@ -87,8 +87,8 @@ app.get("/api/discounts", (request, response) => {
 });
 
 app.post("/api/payments/qr", async (request, response) => {
-  if (!bakongConfig.accountId || !bakongConfig.merchantId || !bakongConfig.acquiringBank) {
-    return response.status(503).json({ error: "Bakong merchant configuration is missing" });
+  if (!abaPayWayConfig.accountId || !abaPayWayConfig.merchantId || !abaPayWayConfig.acquiringBank) {
+    return response.status(503).json({ error: "ABA PayWay merchant configuration is missing" });
   }
   const { items } = request.body;
   if (!Array.isArray(items) || items.length === 0) {
@@ -109,16 +109,16 @@ app.post("/api/payments/qr", async (request, response) => {
   const reference = `KS-${crypto.randomUUID().split("-")[0].toUpperCase()}`;
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
   const merchantInfo = new MerchantInfo(
-    bakongConfig.accountId,
-    bakongConfig.merchantName,
-    bakongConfig.merchantCity,
-    bakongConfig.merchantId,
-    bakongConfig.acquiringBank,
+    abaPayWayConfig.accountId,
+    abaPayWayConfig.merchantName,
+    abaPayWayConfig.merchantCity,
+    abaPayWayConfig.merchantId,
+    abaPayWayConfig.acquiringBank,
     {
       currency: khqrData.currency.usd,
       amount,
       billNumber: reference,
-      storeLabel: bakongConfig.merchantName,
+      storeLabel: abaPayWayConfig.merchantName,
       terminalLabel: "KHMER STORE",
       expirationTimestamp: Date.parse(expiresAt),
       merchantCategoryCode: "5999"
@@ -126,10 +126,22 @@ app.post("/api/payments/qr", async (request, response) => {
   );
   const khqrResponse = new BakongKHQR().generateMerchant(merchantInfo);
   if (khqrResponse.status.code !== 0 || !khqrResponse.data?.qr) {
-    return response.status(502).json({ error: "Bakong could not generate a payment QR" });
+    return response.status(502).json({ error: "ABA PayWay could not generate a payment QR" });
   }
   const qrDataUrl = await QRCode.toDataURL(khqrResponse.data.qr, { errorCorrectionLevel: "M", margin: 2, width: 320 });
-  const payment = { id: crypto.randomUUID(), reference, receiver: bakongConfig.accountId, amount, currency: "USD", items: normalizedItems, status: "pending", expiresAt, createdAt: new Date().toISOString(), provider: "bakong", qrMd5: khqrResponse.data.md5 };
+  const payment = {
+    id: crypto.randomUUID(),
+    reference,
+    receiver: abaPayWayConfig.accountId,
+    amount,
+    currency: "USD",
+    items: normalizedItems,
+    status: "pending",
+    expiresAt,
+    createdAt: new Date().toISOString(),
+    provider: "abapayway",
+    qrMd5: khqrResponse.data.md5
+  };
   appendToCollection(paymentsFile, payment);
 
   response.status(201).json({ data: { ...payment, qrDataUrl }, message: "Scan this KHQR code to continue payment" });
